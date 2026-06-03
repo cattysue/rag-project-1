@@ -1,0 +1,66 @@
+# generated: 2026-06-03
+# last_updated: 2026-06-03
+# project: rag-project-1
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - Developer typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-06-03
+last_updated: 2026-06-03 (1-6 ready-for-dev)
+project: rag-project-1
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: 개발 환경 및 문서 관리 시스템
+  epic-1: in-progress
+  1-1-프로젝트-초기화-및-개발-환경-구성: done
+  1-2-데이터베이스-스키마-및-pgvector-초기화: done
+  1-3-pdf-파싱-및-조항-단위-청킹: done
+  1-4-openai-임베딩-및-벡터-저장-파이프라인: done
+  1-5-관리자-pdf-업로드-교체-상태-api: review
+  1-6-관리자-웹-페이지-pdf-업로드-ui: done
+  epic-1-retrospective: optional
+
+  # Epic 2: 교사 채팅 인터페이스
+  epic-2: backlog
+  2-1-rag-파이프라인-및-채팅-api-백엔드: backlog
+  2-2-채팅-웹-ui-기본-구조-및-메시지-표시: backlog
+  2-3-출처-조항-표시-및-반응형-디자인: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Railway 배포 및 품질 검증
+  epic-3: backlog
+  3-1-railway-배포-및-환경변수-구성: backlog
+  3-2-검색-품질-검증-및-최종-배포-승인: backlog
+  epic-3-retrospective: optional

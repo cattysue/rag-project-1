@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+backend/.env
+
+# Node
+node_modules/
+.next/
+frontend/.env.local
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code 내부 설정
+.claude/
+
+# BMad output (선택적 — git에 포함하려면 이 줄 삭제)
+# _bmad-output/
