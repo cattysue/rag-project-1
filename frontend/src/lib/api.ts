@@ -1,4 +1,4 @@
-import type { AdminStatus, UploadResponse } from "@/lib/types";
+import type { AdminStatus, UploadResponse, ChatRequest, ChatResponse } from "@/lib/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -53,4 +53,20 @@ export async function getAdminStatus(
   }
 
   return data as AdminStatus;
+}
+
+export async function sendChatMessage(
+  question: string,
+  messages: ChatRequest["messages"],
+  signal?: AbortSignal
+): Promise<ChatResponse> {
+  const res = await fetch(`${BASE_URL}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, messages }),
+    signal,
+  });
+
+  if (!res.ok) throw new Error("CHAT_FAILED");
+  return res.json();
 }
