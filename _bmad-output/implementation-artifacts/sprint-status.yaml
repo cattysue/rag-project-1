@@ -50,14 +50,14 @@ development_status:
   1-4-openai-임베딩-및-벡터-저장-파이프라인: done
   1-5-관리자-pdf-업로드-교체-상태-api: done
   1-6-관리자-웹-페이지-pdf-업로드-ui: done
-  epic-1-retrospective: optional
+  epic-1-retrospective: done
 
   # Epic 2: 교사 채팅 인터페이스
   epic-2: done
   2-1-rag-파이프라인-및-채팅-api-백엔드: done
   2-2-채팅-웹-ui-기본-구조-및-메시지-표시: done
   2-3-출처-조항-표시-및-반응형-디자인: done
-  epic-2-retrospective: optional
+  epic-2-retrospective: done
 
   # Epic 3: Railway 배포 및 품질 검증
   epic-3: done
