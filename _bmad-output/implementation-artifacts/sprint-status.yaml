@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-06-03
-last_updated: 2026-06-04 (done)
+last_updated: 2026-06-04
 project: rag-project-1
 project_key: NOKEY
 tracking_system: file-system
@@ -60,7 +60,7 @@ development_status:
   epic-2-retrospective: optional
 
   # Epic 3: Railway 배포 및 품질 검증
-  epic-3: backlog
-  3-1-railway-배포-및-환경변수-구성: backlog
+  epic-3: in-progress
+  3-1-railway-배포-및-환경변수-구성: in-progress
   3-2-검색-품질-검증-및-최종-배포-승인: backlog
   epic-3-retrospective: optional
