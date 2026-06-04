@@ -6,7 +6,7 @@ from openai import OpenAI
 from db.database import get_connection
 from services.embeddings import get_embedding
 
-SIMILARITY_THRESHOLD = 0.5  # cosine distance — 이 값 이상이면 관련 조항 없음으로 판단
+SIMILARITY_THRESHOLD = 0.75  # cosine distance — 이 값 이상이면 관련 조항 없음으로 판단
 TOP_K = 5
 GPT_MODEL = "gpt-4o"
 
