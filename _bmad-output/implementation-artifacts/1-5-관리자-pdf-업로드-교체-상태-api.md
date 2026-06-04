@@ -1,6 +1,6 @@
 # Story 1.5: 관리자 PDF 업로드·교체·상태 API
 
-Status: review
+Status: done
 
 ## Story
 

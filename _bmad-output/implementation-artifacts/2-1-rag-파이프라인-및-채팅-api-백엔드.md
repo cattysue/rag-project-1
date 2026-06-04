@@ -1,6 +1,6 @@
 # Story 2.1: RAG 파이프라인 및 채팅 API (백엔드)
 
-Status: review
+Status: done
 
 ## Story
 
