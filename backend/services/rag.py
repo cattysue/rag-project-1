@@ -155,45 +155,51 @@ def _deduplicate_sources(chunks: list[dict]) -> list[dict]:
 
 
 def _expand_query(question: str) -> str:
-    """GPT로 질문을 학업성적관리규정 용어로 재표현해 검색 정확도를 높인다."""
-    client = _get_gpt_client()
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "당신은 학업성적관리규정 문서 검색 도우미입니다. "
-                    "사용자 질문을 규정 문서에서 쓰는 공식 용어로 바꿔 주세요. "
-                    "원래 질문의 의미를 유지하면서 '이의신청', '반입', '결시', '결석', "
-                    "'성적처리' 같은 공식 행정 용어를 사용하세요. "
-                    "오직 바꾼 질문 한 문장만 출력하세요."
-                ),
-            },
-            {"role": "user", "content": question},
-        ],
-        temperature=0,
-        max_tokens=100,
-    )
-    return response.choices[0].message.content or question
+    """GPT로 질문을 학업성적관리규정 용어로 재표현해 검색 정확도를 높인다.
+
+    API 오류(Rate Limit, 네트워크 오류, 빈 응답 등) 발생 시 원본 질문을 그대로 반환.
+    """
+    try:
+        client = _get_gpt_client()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "당신은 학업성적관리규정 문서 검색 도우미입니다. "
+                        "사용자 질문을 규정 문서에서 쓰는 공식 용어로 바꿔 주세요. "
+                        "원래 질문의 의미를 유지하면서 '이의신청', '반입', '결시', '결석', "
+                        "'성적처리' 같은 공식 행정 용어를 사용하세요. "
+                        "오직 바꾼 질문 한 문장만 출력하세요."
+                    ),
+                },
+                {"role": "user", "content": question},
+            ],
+            temperature=0,
+            max_tokens=100,
+        )
+        choices = response.choices
+        if not choices:
+            return question
+        return choices[0].message.content or question
+    except Exception:
+        return question
 
 
 def get_chat_answer(question: str, messages: list[dict]) -> dict:
     """하이브리드 검색(BM25 + 벡터)으로 관련 조항 검색 후 GPT-4o 답변 생성."""
     expanded = _expand_query(question)
 
-    # 벡터 검색 (expanded → 원본 순서로 시도)
+    # 벡터 검색 — threshold 없이 TOP_K 반환 (DB 비어있으면 빈 리스트)
     vector_chunks = search_similar_chunks(get_embedding(expanded))
-    if not vector_chunks:
-        vector_chunks = search_similar_chunks(get_embedding(question))
 
-    # BM25 키워드 검색
+    # BM25 키워드 검색 — 점수 0 초과인 청크만 반환, 없으면 빈 리스트
+    # 참고: BM25Okapi는 매 요청마다 재생성 (청크 수가 소규모라 허용 가능)
     all_chunks = get_all_chunks()
     bm25_chunks = search_bm25(expanded, all_chunks)
-    if not bm25_chunks:
-        bm25_chunks = search_bm25(question, all_chunks)
 
-    # RRF 합산
+    # RRF 합산 — 둘 다 비어있으면(빈 DB) 빈 리스트 반환
     chunks = _reciprocal_rank_fusion(vector_chunks, bm25_chunks)
 
     if not chunks:
