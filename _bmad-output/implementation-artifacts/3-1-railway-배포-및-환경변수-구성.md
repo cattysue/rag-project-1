@@ -1,6 +1,6 @@
 # Story 3.1: Railway 배포 및 환경변수 구성
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,29 +27,29 @@ so that 학교 어디서든 링크 하나로 24시간 규정이를 이용할 수
   - [x] `frontend/package.json` start 스크립트를 `"next start -p $PORT"`로 수정 — Railway가 제공하는 포트 번호 사용
   - [x] `backend/.env.example`에 `ALLOWED_ORIGINS` 항목 추가 — 환경변수 문서화
 
-- [ ] Task 2: (수동) Railway 프로젝트·서비스 생성 (AC: #1)
-  - [ ] railway.app 계정 생성 및 로그인
-  - [ ] 새 프로젝트 생성 → 백엔드 서비스 추가 (GitHub 연결, Root Directory: `backend`)
-  - [ ] 프론트엔드 서비스 추가 (같은 repo, Root Directory: `frontend`)
-  - [ ] PostgreSQL 플러그인 추가 → 백엔드 서비스에 연결
+- [x] Task 2: (수동) Railway 프로젝트·서비스 생성 (AC: #1)
+  - [x] railway.app 계정 생성 및 로그인
+  - [x] 새 프로젝트 생성 → 백엔드 서비스 추가 (GitHub 연결, Root Directory: `backend`)
+  - [x] 프론트엔드 서비스 추가 (같은 repo, Root Directory: `frontend`)
+  - [x] PostgreSQL 플러그인 추가 → 백엔드 서비스에 연결
 
-- [ ] Task 3: (수동) 환경변수 설정 (AC: #2)
-  - [ ] 백엔드 서비스에 `OPENAI_API_KEY`, `ADMIN_PASSWORD` 입력 (DATABASE_URL은 PostgreSQL 연결 시 자동 주입)
-  - [ ] 백엔드 서비스 URL 확인 → 프론트엔드 서비스에 `NEXT_PUBLIC_API_URL` 입력
+- [x] Task 3: (수동) 환경변수 설정 (AC: #2)
+  - [x] 백엔드 서비스에 `OPENAI_API_KEY`, `ADMIN_PASSWORD` 입력 (DATABASE_URL은 PostgreSQL 연결 시 자동 주입)
+  - [x] 백엔드 서비스 URL 확인 → 프론트엔드 서비스에 `NEXT_PUBLIC_API_URL` 입력
 
-- [ ] Task 4: (수동) 배포 실행 및 URL 확인 (AC: #1, #2 완료 전제)
-  - [ ] 백엔드·프론트엔드 서비스 배포 트리거 (GitHub push 또는 Railway 대시보드 "Deploy" 버튼)
-  - [ ] 배포 로그 확인 → 오류 없음 확인
-  - [ ] 프론트엔드 서비스 URL 확인
+- [x] Task 4: (수동) 배포 실행 및 URL 확인 (AC: #1, #2 완료 전제)
+  - [x] 백엔드·프론트엔드 서비스 배포 트리거 (GitHub push 또는 Railway 대시보드 "Deploy" 버튼)
+  - [x] 배포 로그 확인 → 오류 없음 확인
+  - [x] 프론트엔드 서비스 URL 확인
 
-- [ ] Task 5: (수동) CORS 업데이트 — 프론트엔드 URL을 백엔드 환경변수에 추가 (AC: #3)
-  - [ ] 확인된 프론트엔드 URL을 백엔드 `ALLOWED_ORIGINS` 환경변수에 입력
-  - [ ] 백엔드 서비스 재배포 트리거
+- [x] Task 5: (수동) CORS 업데이트 — 프론트엔드 URL을 백엔드 환경변수에 추가 (AC: #3)
+  - [x] 확인된 프론트엔드 URL을 백엔드 `ALLOWED_ORIGINS` 환경변수에 입력
+  - [x] 백엔드 서비스 재배포 트리거
 
-- [ ] Task 6: (수동) 최종 접속 검증 (AC: #4, #5)
-  - [ ] 프론트엔드 URL로 접속 → "규정이" 채팅 화면 정상 로드 확인
-  - [ ] `/admin` 경로 접속 → 관리자 비밀번호 입력창 정상 표시 확인
-  - [ ] 샘플 질문 1개 입력 → 답변·출처 정상 반환 확인 (PDF 업로드 선행 필요)
+- [x] Task 6: (수동) 최종 접속 검증 (AC: #4, #5)
+  - [x] 프론트엔드 URL로 접속 → "규정이" 채팅 화면 정상 로드 확인
+  - [x] `/admin` 경로 접속 → 관리자 비밀번호 입력창 정상 표시 확인
+  - [x] 샘플 질문 1개 입력 → 답변·출처 정상 반환 확인 (PDF 업로드 선행 필요)
 
 ## Dev Notes
 
@@ -280,4 +280,5 @@ claude-sonnet-4-6
 
 ### Change Log
 
-- 2026-06-04: Story 3-1 코드 변경 완료 — `backend/Procfile` 신규 생성, `frontend/package.json` start 스크립트 `$PORT` 바인딩 적용, `backend/.env.example` ALLOWED_ORIGINS 문서화. Task 2~6(Railway 배포 수동 작업)은 Catty 직접 진행 필요.
+- 2026-06-04: Story 3-1 코드 변경 완료 — `backend/Procfile` 신규 생성, `frontend/package.json` start 스크립트 `$PORT` 바인딩 적용, `backend/.env.example` ALLOWED_ORIGINS 문서화.
+- 2026-06-04: Railway 배포 완료 (Catty 수동 진행) — 백엔드·프론트엔드·PostgreSQL 세 서비스 생성, 환경변수 설정, CORS 업데이트, 접속 검증 완료. 모든 AC 충족. 스토리 상태: review.
