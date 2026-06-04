@@ -6,19 +6,18 @@ import ChatInput from "@/components/chat/ChatInput";
 import { sendChatMessage } from "@/lib/api";
 import type { ChatMessage } from "@/lib/types";
 
-let _keyCounter = 0;
-const nextKey = () => `msg-${++_keyCounter}`;
-
 export default function ChatWindow() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const keyCounterRef = useRef(0);
+  const nextKey = () => `msg-${++keyCounterRef.current}`;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, errorMessage]);
 
   // Abort in-flight request on unmount
   useEffect(() => {
@@ -37,6 +36,7 @@ export default function ChatWindow() {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
+    abortControllerRef.current?.abort();  // cancel any previous in-flight request
     abortControllerRef.current = new AbortController();
 
     try {

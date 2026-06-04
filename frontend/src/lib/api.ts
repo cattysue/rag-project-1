@@ -3,7 +3,7 @@ import type { AdminStatus, UploadResponse, ChatRequest, ChatResponse } from "@/l
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 // P9: warn on missing env var so production misconfiguration is visible in the browser console
-if (!process.env.NEXT_PUBLIC_API_URL) {
+if (typeof window !== "undefined" && !process.env.NEXT_PUBLIC_API_URL) {
   console.warn(
     "[규정이] NEXT_PUBLIC_API_URL이 설정되지 않았습니다. http://localhost:8000으로 연결합니다."
   );

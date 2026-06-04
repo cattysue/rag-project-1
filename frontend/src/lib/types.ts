@@ -17,7 +17,7 @@ export interface Source {
 }
 
 export interface ChatMessage {
-  _key?: string;  // client-side stable render key; never sent to backend
+  _key: string;  // client-side stable render key; never sent to backend
   role: ChatRole;
   content: string;
   sources?: Source[];

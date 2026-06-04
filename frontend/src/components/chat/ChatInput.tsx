@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { useState, useRef, type FormEvent, type KeyboardEvent } from "react";
 
 interface ChatInputProps {
   onSend: (question: string) => void;
@@ -9,6 +9,7 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
   const [value, setValue] = useState("");
+  const isComposingRef = useRef(false);
 
   const submit = () => {
     const trimmed = value.trim();
@@ -23,7 +24,7 @@ export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && !isComposingRef.current) {
       e.preventDefault();
       submit();
     }
@@ -38,6 +39,8 @@ export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
+        onCompositionStart={() => { isComposingRef.current = true; }}
+        onCompositionEnd={() => { isComposingRef.current = false; }}
         placeholder="질문을 입력하세요..."
         disabled={isLoading}
         rows={1}
@@ -46,7 +49,7 @@ export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
       <button
         type="submit"
         disabled={isLoading || !value.trim()}
-        className="flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex min-h-[44px] items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isLoading ? (
           <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
