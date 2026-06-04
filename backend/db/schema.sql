@@ -9,3 +9,7 @@ CREATE TABLE IF NOT EXISTS documents (
     page_number     INTEGER,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_documents_embedding_hnsw
+ON documents USING hnsw (embedding vector_cosine_ops)
+WITH (m = 16, ef_construction = 64);
