@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-06-03
-last_updated: 2026-06-04 (2-2 review)
+last_updated: 2026-06-04 (2-3 review)
 project: rag-project-1
 project_key: NOKEY
 tracking_system: file-system
@@ -56,7 +56,7 @@ development_status:
   epic-2: in-progress
   2-1-rag-파이프라인-및-채팅-api-백엔드: review
   2-2-채팅-웹-ui-기본-구조-및-메시지-표시: review
-  2-3-출처-조항-표시-및-반응형-디자인: backlog
+  2-3-출처-조항-표시-및-반응형-디자인: review
   epic-2-retrospective: optional
 
   # Epic 3: Railway 배포 및 품질 검증
