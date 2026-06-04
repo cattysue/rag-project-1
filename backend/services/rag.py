@@ -6,8 +6,8 @@ from openai import OpenAI
 from db.database import get_connection
 from services.embeddings import get_embedding
 
-SIMILARITY_THRESHOLD = 0.75  # cosine distance — 이 값 이상이면 관련 조항 없음으로 판단
-TOP_K = 5
+SIMILARITY_THRESHOLD = 0.82  # cosine distance — 이 값 이상이면 관련 조항 없음으로 판단
+TOP_K = 10
 GPT_MODEL = "gpt-4o"
 
 SYSTEM_PROMPT = """당신은 K고등학교 학업성적관리규정 전문 도우미 "규정이"입니다.
@@ -92,13 +92,43 @@ def _deduplicate_sources(chunks: list[dict]) -> list[dict]:
     return sources
 
 
+def _expand_query(question: str) -> str:
+    """GPT로 질문을 학업성적관리규정 용어로 재표현해 검색 정확도를 높인다."""
+    client = _get_gpt_client()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "당신은 학업성적관리규정 문서 검색 도우미입니다. "
+                    "사용자 질문을 규정 문서에서 쓰는 공식 용어로 바꿔 주세요. "
+                    "원래 질문의 의미를 유지하면서 '이의신청', '반입', '결시', '결석', "
+                    "'성적처리' 같은 공식 행정 용어를 사용하세요. "
+                    "오직 바꾼 질문 한 문장만 출력하세요."
+                ),
+            },
+            {"role": "user", "content": question},
+        ],
+        temperature=0,
+        max_tokens=100,
+    )
+    return response.choices[0].message.content or question
+
+
 def get_chat_answer(question: str, messages: list[dict]) -> dict:
     """질문을 임베딩하고 유사 조항을 검색한 뒤 GPT-4o 답변을 생성한다.
 
     유사 조항이 없으면 GPT를 호출하지 않고 환각 방지 메시지를 반환한다.
     """
-    query_embedding = get_embedding(question)
+    expanded = _expand_query(question)
+    query_embedding = get_embedding(expanded)
     chunks = search_similar_chunks(query_embedding)
+
+    # 확장 쿼리로 못 찾으면 원본 질문으로 한 번 더 시도
+    if not chunks:
+        query_embedding = get_embedding(question)
+        chunks = search_similar_chunks(query_embedding)
 
     if not chunks:
         return {"answer": NO_CONTENT_ANSWER, "sources": []}
